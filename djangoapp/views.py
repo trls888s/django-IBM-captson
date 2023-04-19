@@ -29,7 +29,7 @@ def contact_view(request):
     endpoint = request.path
     context = {'endpoint': endpoint}
     if request.method == "GET":
-        return render(request, 'djangoapp/contact_us.html', context)
+        return render(request, 'djangoapp/contact.html', context)
 
 # Create a `login_request` view to handle sign in request
 
