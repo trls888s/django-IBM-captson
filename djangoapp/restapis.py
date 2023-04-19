@@ -138,8 +138,8 @@ def get_dealer_reviews_from_cf(url, dealer_id):
                     dealership=dealership, id=id, name=name, purchase=purchase, review=review_content)
 
             # Analysing the sentiment of the review object's review text and saving it to the object attribute "sentiment"
-            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
-            print(f"sentiment: {review_obj.sentiment}")
+            #review_obj.sentiment = analyze_review_sentiments(review_obj.review)
+            #print(f"sentiment: {review_obj.sentiment}")
 
             # Saving the review object to the list of results
             results.append(review_obj)

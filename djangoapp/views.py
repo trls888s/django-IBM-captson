@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
-# from .restapis import related methods
+from .models import CarModel
+from .restapis import get_dealer_by_id, get_dealers_from_cf,get_dealers_by_state,get_dealer_reviews_from_cf,post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -12,6 +12,8 @@ import json
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
+api_key = "OdKje2K5KlzeVLcgy5KfMF48huJZztp0-tv7hr5veetu"
 
 
 # Create your views here.
@@ -100,7 +102,7 @@ def registration_request(request):
 def get_dealerships(request):
     if request.method == "GET":
         context = {}
-        url = "CloudantPath"
+        url = "https://au-syd.functions.appdomain.cloud/api/v1/web/af240b18-7702-4c56-9cbf-12c2efd18c07/default/get-dealership"
         # Get dealers from the URL
         context["dealerships"] = get_dealers_from_cf(url)
         # Concat all dealer's short name
@@ -115,7 +117,7 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = 'Cloudant Path'
+        url = 'https://e5cb28fb-9954-470d-9803-a5fc547decba-bluemix.cloudantnosqldb.appdomain.cloud/api/reviews'
         reviews = get_dealer_reviews_from_cf(url,dealer_id)
         context = {
             "reviews":  reviews, 
@@ -130,7 +132,8 @@ def add_review(request, dealer_id):
     if request.user.is_authenticated:
         # GET request renders the page with the form for filling out a review
         if request.method == "GET":
-            url = "Cloundant_Path"
+            url = "https://e5cb28fb-9954-470d-9803-a5fc547decba-bluemix.cloudantnosqldb.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
+            
             # Get dealer details from the API
             context = {
                 "cars": CarModel.objects.all(),
@@ -159,7 +162,8 @@ def add_review(request, dealer_id):
             else: 
                 review["purchase_date"] = None
 
-            url = "FIX_Cloudant_API_Path"  
+            url = "https://e5cb28fb-9954-470d-9803-a5fc547decba-bluemix.cloudantnosqldb.appdomain.cloud/api/reviews" 
+
             json_payload = {"review": review}  
             result = post_request(url, json_payload, dealerId=dealer_id)
             if int(result.status_code) == 200:

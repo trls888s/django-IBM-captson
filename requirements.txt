@@ -5,3 +5,4 @@ ibm_cloud_sdk_core==3.10.0
 dj-static==0.0.6
 ibm_watson==5.2.2
 ibmcloudant==0.0.34
+Cloudant
